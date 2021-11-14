@@ -3,12 +3,12 @@
 Last updated 10 May 2013 by RBD
 
 Contributors include: 
--             Ning Hu
--             Roger B. Dannenberg
--             Joshua Hailpern
--             Umpei Kurokawa
--             Greg Wakefield
--             Mark Bartsch
+- Ning Hu
+- Roger B. Dannenberg
+- Joshua Hailpern
+- Umpei Kurokawa
+- Greg Wakefield
+- Mark Bartsch
  
 scorealign works by computing chromagrams of the two sources. Midi chromagrams
 are estimated directly from pitch data without synthesis. A similarity matrix

@@ -1,14 +1,14 @@
-scorealign -- a program for audio-to-audio and audio-to-midi alignment
+# scorealign -- a program for audio-to-audio and audio-to-midi alignment
 
 Last updated 10 May 2013 by RBD
 
 Contributors include: 
-             Ning Hu
-             Roger B. Dannenberg
-             Joshua Hailpern
-             Umpei Kurokawa
-             Greg Wakefield
-             Mark Bartsch
+-             Ning Hu
+-             Roger B. Dannenberg
+-             Joshua Hailpern
+-             Umpei Kurokawa
+-             Greg Wakefield
+-             Mark Bartsch
  
 scorealign works by computing chromagrams of the two sources. Midi chromagrams
 are estimated directly from pitch data without synthesis. A similarity matrix
@@ -40,29 +40,30 @@ SourceForge, or you can build the libraries some other way. Note that my
 projects are set up to use 8-bit ASCII rather than Unicode or other.)
 
 Command line parameters:
-
+```
 scorealign [-<flags> [<period> <windowsize> <path> <smooth> 
            <trans> <midi> <beatmap> <image>]] 
                  <file1> [<file2>]
+```
    specifying only <file1> simply transcribes MIDI in <file1> to  
    transcription.txt. Otherwise, align <file1> and <file2>.
    Flags are all listed together, e.g. -hwrstm, followed by filenames
    and arguments corresponding to the flags in the order the flags are
    given. Do not try something like "-h 0.1 -w 0.25" Instead, use
    "-hw 0.1 0.25". The flags are:
-   -h 0.25 indicates a frame period of 0.25 seconds
-   -w 0.25 indicates a window size of 0.25 seconds. 
-   -r indicates filename to write raw alignment path to (default path.data)
-   -s is filename to write smoothed alignment path(default is smooth.data)
-   -t is filename to write the time aligned transcription 
-      (default is transcription.txt)
-   -m is filename to write the time aligned midi file (default is midi.mid)
-   -b is filename to write the time aligned beat times (default is beatmap.txt)
-   -i is filename to write an image of the distance matrix 
+
+   - -h 0.25 indicates a frame period of 0.25 seconds
+   - -w 0.25 indicates a window size of 0.25 seconds. 
+   - -r indicates filename to write raw alignment path to (default path.data)
+   - -s is filename to write smoothed alignment path(default is smooth.data)
+   - -t is filename to write the time aligned transcription (default is transcription.txt)
+   - -m is filename to write the time aligned midi file (default is midi.mid)
+   - -b is filename to write the time aligned beat times (default is beatmap.txt)
+   - -i is filename to write an image of the distance matrix 
          (default is distance.pnm)
-   -o 2.0 indicates a smoothing window of 2.0s
-   -p 3.0 means pre-smooth with a 3s window
-   -x 6.0 indicates 6s line segment approximation
+   - -o 2.0 indicates a smoothing window of 2.0s
+   - -p 3.0 means pre-smooth with a 3s window
+   - -x 6.0 indicates 6s line segment approximation
    
 A bit more detail:
 
@@ -105,11 +106,11 @@ Some notes on the software architecture of scorealign:
 scorealign was originally implemented as a fairly monolithic program
 in MatLab. It was ported to C++. To incorporate this code into Audacity,
 the code was restructured so that audio input is obtained from
-Audio_reader, an abstract class that calls on a subclass to implement
+Audio\_reader, an abstract class that calls on a subclass to implement
 read(). The subclass just copies floats into the provided buffer. It is
 responsible for sample format conversion, stereo-to-mono conversion, etc.
-The Audio_reader returns possibly overlapping buffers of floats. The
-Audio_file_reader subclass uses libsndfile to read in samples and convert
+The Audio\_reader returns possibly overlapping buffers of floats. The
+Audio\_file\_reader subclass uses libsndfile to read in samples and convert
 them to float. It does its own conversion to mono.
 
 When scorealign is used in Audacity, a different subclass of Audio_reader
@@ -123,13 +124,12 @@ passed around to many routines and methods. main.cpp creates a (global)
 Scorealign object and uses code in the module alignfiles.cpp to do the
 work. The purpose of alignfiles is to provide an API that does not 
 depend upon a command line interface, but which assumes you are aligning
-files. Finally, alignfiles.cpp uses an Audio_file_reader to offer
+files. Finally, alignfiles.cpp uses an Audio\_file\_reader to offer
 samples to the main score alignment algorithm.
 
 To summarize:
-   scorealign.cpp and gen_chroma.cpp do most of the pure alignment work
-   audioreader.cpp abstracts the source of audio, whether it comes from
-      a file or some other source
-   alignfiles.cpp opens files and invokes the modules above
-   main.cpp parses the command line and invokes alignfiles.
+-  scorealign.cpp and gen_chroma.cpp do most of the pure alignment work
+-  audioreader.cpp abstracts the source of audio, whether it comes from a file or some other source
+-  alignfiles.cpp opens files and invokes the modules above
+-  main.cpp parses the command line and invokes alignfiles.
 
